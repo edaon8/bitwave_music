@@ -97,11 +97,11 @@
                     <input type="hidden" name="artistID" id="updateartistID">
                     <br>
 
-                    <label>artistName: </label>
+                    <label>Artist Name: </label>
                     <input type="text" name="artistName">
                     <br>
 
-                    <label>streamCount: </label>
+                    <label>Stream Count: </label>
                     <input type="text" name="streamCount">
                 </fieldset>
                 <input type="submit" value="Update Artist" onClick="showForm('browse')">
@@ -112,11 +112,11 @@
             <form id="insert" style="display:none;" action="/insertartist" method="post">
                 <legend>New Artist</legend>
                 <fieldset>
-                    <label>artistName: </label>
+                    <label>Artist Name: </label>
                     <input type="text" name="artistName">
                     <br>
 
-                    <label>streamCount: </label>
+                    <label>Stream Count: </label>
                     <input type="text" name="streamCount">
                 </fieldset>
                 <input type="submit" value="Add Artist" onClick="showForm('browse')">
@@ -129,15 +129,15 @@
                 <fieldset>
                     <p>Are you sure you want to delete this artist?</p>
 
-                    <label>artistID: </label>
+                    <label>Artist ID: </label>
                     <input id="deleteartistID" type="hidden" name="artistID">
                     <br>
 
-                    <label>artistName: </label>
+                    <label>Artist Name: </label>
                     <input type="text" name="artistName">
                     <br>
 
-                    <label>streamCount: </label>
+                    <label>Stream Count: </label>
                     <input type="text" name="streamCount">
                 </fieldset>
                 <input type="submit" value="Delete Artist" onClick="showForm('browse')">
