@@ -120,16 +120,16 @@
                     <input type="hidden" name="playlistID" id="updatePlaylistID">
                     <br>
 
-                    <label>userID: </label>
+                    <label>Username: </label>
                     <select name="userName" id="playlistMenuUpdate">
                     </select>
                     <br>
 
-                    <label>playlistName: </label>
+                    <label>Playlist Name: </label>
                     <input type="text" name="playlistName">
                     <br>
 
-                    <label>playlistLike: </label>
+                    <label>Playlist Likes: </label>
                     <input type="text" name="playlistLike">
                 </fieldset>
                 <input type="submit" value="Update Playlist" onClick="showForm('browse')">
@@ -140,16 +140,16 @@
             <form id="insert" style="display:none;" action="/insertplaylist" method="post">
                 <legend>New Playlist</legend>
                 <fieldset>
-                    <label>userID: </label>
+                    <label>Username: </label>
                     <select name="userID" id="playlistMenuInsert">
                     </select>
                     <br>
 
-                    <label>playlistName: </label>
+                    <label>Playlist Name: </label>
                     <input type="text" name="playlistName">
                     <br>
 
-                    <label>playlistLike: </label>
+                    <label>Playlist Likes: </label>
                     <input type="text" name="playlistLike">
                 </fieldset>
                 <input type="submit" value="Add Playlist" onClick="showForm('browse')">
@@ -162,7 +162,7 @@
                 <fieldset>
                     <p>Are you sure you want to delete this playlist?</p>
 
-                    <label>playlistID:</label>
+                    <label>Playlist ID:</label>
                     <input id="deletePlaylistID" type="hidden" name="playlistID">
                 </fieldset>
                 <input type="submit" value="Delete Playlist" onClick="showForm('browse')">
