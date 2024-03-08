@@ -10,14 +10,15 @@
                 //Fill the table
                 const res = await fetch(`/playlistsongs`, { method: 'GET' })
                 const songs = await res.json();
+                console.log(songs);
                 let table=document.getElementById("playlistsong_table");
                 for(let i=0;i<songs.length;i++){
                     let frag=document.createDocumentFragment();
                     let tr=document.createElement('tr');
                     tr.innerHTML=`
                             <td>${songs[i]["playlistSongsID"]}</td>
-                            <td>${songs[i]["playlistID"]}</td>
-                            <td>${songs[i]["songID"]}</td>
+                            <td>${songs[i]["playlistName"]}</td>
+                            <td>${songs[i]["songName"]}</td>
                             <td class="tableButton" onclick="showForm('update')">Edit</td>
                             <td class="tableButton" onclick="showForm('delete')">Delete</td>
                         `;
