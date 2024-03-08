@@ -17,14 +17,24 @@
                     tr.innerHTML=`
                             <td>${users[i]["userID"]}</td>
                             <td>${users[i]["userName"]}</td>
-                            <td class="tableButton" onclick="showForm('update')">Edit</td>
-                            <td class="tableButton" onclick="showForm('delete')">Delete</td>
+                            <td class="tableButton" onclick="updateuser(${users[i]["userID"]})">Edit</td>
+                            <td class="tableButton" onclick="deleteuser(${users[i]["userID"]})">Delete</td>
                         `;
                     frag.appendChild(tr);
                     table.appendChild(frag);
                 }
             }
             fillTable();
+
+            async function deleteuser(userID) {
+                document.getElementById("deleteUserID").setAttribute('value', userID);
+                showForm("delete");
+            }
+
+            async function updateuser(userID) {
+                document.getElementById("updateuserID").setAttribute('value', userID);
+                showForm("update");
+            }
 
             function showForm(id){
                 if(id=="browse"){
@@ -48,9 +58,6 @@
                     document.getElementById("insert").style.display = "none";
                     document.getElementById("delete").style.display = "inline-block";
                 }
-            }
-            async function editUsers() {
-                const res = 
             }
 
 
@@ -83,23 +90,23 @@
             </div>
 
             <!-- Update User -->
-            <form id="update" style="display:none;">
+            <form id="update" style="display:none;" action="/updateuser" method="post">
                 <legend>Update User</legend>
                 <fieldset>
                     <label>userID: 1</label>
-                    <input type="hidden" name="userID" value="1">
+                    <input type="hidden" name="userID" id="updateuserID">
                     <br>
 
                     <label>userName: </label>
-                    <input type="text" name="userName" value="Music Lover">
+                    <input type="text" name="userName">
                 </fieldset>
                 <input type="submit" value="Update User" onClick="showForm('browse')">
                 <input type="button" value="Cancel" onClick="showForm('browse')">
             </form>
 
             <!-- Insert User -->
-            <form action="" id="insert" style="display:none;">
-                <legend>New User</legend>
+            <form id="insert" style="display:none;" action="/insertuser" method="post">
+                <legend>New User</~legend>
                 <fieldset>
                     <label>userName: </label>
                     <input type="text" name="userName">
@@ -109,17 +116,17 @@
             </form>
 
 
-            <form id="delete" style="display:none;">
+            <form id="delete" style="display:none;" action="/deleteuser" method="post">
                 <legend>Delete User</legend>
                 <fieldset>
                     <p>Are you sure you want to delete this user?</p>
 
                     <label>userID: </label> 1
-                    <input type="hidden" name="userID" value="1">
+                    <input type="hidden" name="userID">
                     <br>
 
                     <label>userName: </label>
-                    <input type="text" name="userName" value="Music Lover">
+                    <input id="deleteUserID" type="text" name="userName">
                 </fieldset>
                 <input type="submit" value="Delete User" onClick="showForm('browse')">
                 <input type="button" value="Cancel"  onClick="showForm('browse')">
