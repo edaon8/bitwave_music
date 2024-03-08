@@ -114,6 +114,20 @@ app.post('/insertartist', function(req, res){
     });
 });
 
+app.post('/insertplaylist', function(req, res){
+    const userID=req.body.userID;
+    const playlistName=req.body.playlistName;
+    const playlistLike=req.body.playlistLike;
+    // Define our queries
+    query = `INSERT INTO Playlists (userID, playlistName, playlistLike)
+    VALUES (${userID}, "${playlistName}", ${playlistLike});`;
+
+    db.pool.query(query, function (err, results, fields){
+        console.log(JSON.stringify(results));
+        res.redirect('/playlists.html');
+    });
+});
+
 //Delete Routes
 app.post('/deletesong', function(req, res){
     const songID = req.body.songID;
@@ -145,6 +159,16 @@ app.post('/deleteartist', function(req, res){
     db.pool.query(query, function (err, results, fields) {
         console.log(JSON.stringify(results));
         res.redirect('/artists.html');
+    })
+});
+
+app.post('/deleteplaylist', function(req, res){
+    const playlistID = req.body.playlistID;
+    query = `DELETE FROM Playlists WHERE playlistID = ${playlistID};`;
+
+    db.pool.query(query, function (err, results, fields) {
+        console.log(JSON.stringify(results));
+        res.redirect('/playlists.html');
     })
 });
 
@@ -195,10 +219,37 @@ app.post('/updateartist', function(req, res){
     });
 });
 
+app.post('/updateplaylist', function(req, res){
+    const playlistID=req.body.playlistID;
+    const userID=req.body.userID;
+    const playlistName=req.body.playlistName;
+    const playlistLike=req.body.playlistLike;
+    // Define our queries
+    query = `UPDATE Playlists
+    SET userID = (
+        SELECT userName FROM Users WHERE userID = ${userID}
+    ), playlistName = "${playlistName}", 
+    playlistLike = ${playlistLike}
+    WHERE playlistID = ${playlistID};`
+
+    db.pool.query(query, function (err, results, fields){
+        console.log(JSON.stringify(results));
+        res.redirect('/playlists.html');
+    });
+});
+
 
 
 app.get('/artistnames', function(req, res) {
     query = `SELECT artistName FROM Artists`;
+
+    db.pool.query(query, function (err, results, fields){
+        res.send(JSON.stringify(results));
+    });
+});
+
+app.get('/usernames', function(req, res) {
+    query = `SELECT userName FROM Users`;
 
     db.pool.query(query, function (err, results, fields){
         res.send(JSON.stringify(results));
