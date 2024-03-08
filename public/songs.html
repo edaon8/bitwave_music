@@ -19,8 +19,8 @@
                             <td>${songs[i]["songName"]}</td>
                             <td>${songs[i]["streamCount"]}</td>
                             <td>${songs[i]["artistName"]}</td>
-                            <td class="tableButton" onclick="showForm('update')">Edit</td>
-                            <td class="tableButton" onclick="deleteUser(${songs[i]["songID"]})">Delete</td>
+                            <td class="tableButton" onclick="updatesong(${songs[i]["songID"]})">Edit</td>
+                            <td class="tableButton" onclick="deletesong(${songs[i]["songID"]})">Delete</td>
                         `;
                     frag.appendChild(tr);
                     table.appendChild(frag);
@@ -28,9 +28,37 @@
             }
             fillTable();
 
-            async function deleteUser(songID) {
-
+            async function deletesong(songID) {
+                console.log("clicked button");
+                document.getElementById("deleteSongID").setAttribute('value', songID);
+                showForm("delete");
             }
+
+            async function updatesong(songID) {
+                document.getElementById("updatesongID").setAttribute('value', songID);
+                showForm("update");
+            }
+
+            async function fillDropDown() {
+                const res = await fetch(`/artistnames`, { method: 'GET' })
+                const artistnames = await res.json();
+                let dropdown1=document.getElementById("artistMenuUpdate");
+                let dropdown2=document.getElementById("artistMenuDelete");
+                console.log(artistnames);
+                for(let i=0;i<artistnames.length;i++){
+                    let frag1=document.createDocumentFragment();
+                    let frag2=document.createDocumentFragment();
+                    let option1=document.createElement('option');
+                    let option2=document.createElement('option');
+                    option1.textContent=artistnames[i]["artistName"];
+                    option2.textContent=artistnames[i]["artistName"];
+                    frag1.appendChild(option1);
+                    frag2.appendChild(option2);
+                    dropdown1.appendChild(frag1);
+                    dropdown2.appendChild(frag2);
+                }
+            }
+            fillDropDown();
 
             function showForm(id){
                 if(id=="browse"){
@@ -86,26 +114,23 @@
             </div>
 
             <!-- Update Song -->
-            <form id="update" style="display:none;">
+            <form id="update" style="display:none;" action="/updatesong" method="post">
                 <legend>Update Song</legend>
                 <fieldset>
-                    <label>songID: 1</label>
-                    <input type="hidden" name="userID" value="1">
+                    <label>songID: </label>
+                    <input type="hidden" name="songID" id="updatesongID">
                     <br>
 
                     <label>songName: </label>
-                    <input type="text" name="songName" value="Ethereal Dreams">
+                    <input type="text" name="songName">
                     <br>
 
                     <label>streamCount: </label>
-                    <input type="text" name="streamCount" value="62384">
+                    <input type="text" name="streamCount">
                     <br>
 
                     <label>artistID: </label>
-                    <select name="artistID">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
+                    <select name="artistName" id="artistMenuUpdate">
                     </select>
                 </fieldset>
                 <input type="submit" value="Update Song" onClick="showForm('browse')">
@@ -125,25 +150,22 @@
                     <br>
 
                     <label>artistID: </label>
-                    <select name="artistID">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
+                    <select name="artistID" id="artistMenuDelete">
                     </select>
                 </fieldset>
-                <input type="submit" value="Add User" onClick="showForm('browse')">
+                <input type="submit" value="Add Song" onClick="showForm('browse')">
                 <input type="button" value="Cancel"  onClick="showForm('browse')">
             </form>
 
             <!-- Delete Song -->
-            <form id="delete" style="display:none;" action="/deletesong">
+            <form id="delete" style="display:none;" action="/deletesong" method="post">
                 <legend>Delete Song</legend>
                 <fieldset>
                     <p>Are you sure you want to delete this song?</p>
 
                     <input id="deleteSongID" type="hidden" name="songID" value="1">
                 </fieldset>
-                <input type="submit" value="Delete User" onClick="showForm('browse')">
+                <input type="submit" value="Delete Song" onClick="showForm('browse')">
                 <input type="button" value="Cancel"  onClick="showForm('browse')">
             </form>
         </main>
