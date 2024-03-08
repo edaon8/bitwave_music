@@ -20,13 +20,17 @@
                             <td>${songs[i]["streamCount"]}</td>
                             <td>${songs[i]["artistName"]}</td>
                             <td class="tableButton" onclick="showForm('update')">Edit</td>
-                            <td class="tableButton" onclick="showForm('delete')">Delete</td>
+                            <td class="tableButton" onclick="deleteUser(${songs[i]["songID"]})">Delete</td>
                         `;
                     frag.appendChild(tr);
                     table.appendChild(frag);
                 }
             }
             fillTable();
+
+            async function deleteUser(songID) {
+
+            }
 
             function showForm(id){
                 if(id=="browse"){
@@ -132,29 +136,12 @@
             </form>
 
             <!-- Delete Song -->
-            <form id="delete" style="display:none;">
+            <form id="delete" style="display:none;" action="/deletesong">
                 <legend>Delete Song</legend>
                 <fieldset>
                     <p>Are you sure you want to delete this song?</p>
 
-                    <label>userID: </label> 1
-                    <input type="hidden" name="userID" value="1">
-                    <br>
-
-                    <label>songName: </label>
-                    <input type="text" name="songName" value="Ethereal Dreams">
-                    <br>
-
-                    <label>streamCount: </label>
-                    <input type="text" name="streamCount" value="62384">
-                    <br>
-
-                    <label>artistID: </label>
-                    <select name="artistID">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                    </select>
+                    <input id="deleteSongID" type="hidden" name="songID" value="1">
                 </fieldset>
                 <input type="submit" value="Delete User" onClick="showForm('browse')">
                 <input type="button" value="Cancel"  onClick="showForm('browse')">

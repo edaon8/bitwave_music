@@ -29,6 +29,17 @@ app.get('/users', function(req, res){
     });
 });
 
+app.get('/updateuser', function(req, res){
+    const userID = req.body.userID;
+    const userName = req.body.userName;
+
+    query = 'UPDATE Users SET userName = :userName_input WHERE userID = :userID_to_update;';
+    
+    db.pool.query(query, function (err, results, fields){
+        
+    })
+});
+
 app.get('/songs', function(req, res){
     // Define our queries
     query = `SELECT Songs.songID, Songs.songName, Songs.streamCount, Artists.artistName FROM Songs JOIN Artists ON Songs.artistID = Artists.artistID;`;
