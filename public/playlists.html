@@ -6,6 +6,28 @@
         <link rel="stylesheet" href="index.css">
         <title>BitWave Music Admin</title>
         <script>
+            async function fillTable(){
+                //Fill the table
+                const res = await fetch(`/playlists`, { method: 'GET' })
+                const songs = await res.json();
+                let table=document.getElementById("playlist_table");
+                for(let i=0;i<songs.length;i++){
+                    let frag=document.createDocumentFragment();
+                    let tr=document.createElement('tr');
+                    tr.innerHTML=`
+                            <td>${songs[i]["playlistID"]}</td>
+                            <td>${songs[i]["userName"]}</td>
+                            <td>${songs[i]["playlistName"]}</td>
+                            <td>${songs[i]["playlistLike"]}</td>
+                            <td class="tableButton" onclick="showForm('update')">Edit</td>
+                            <td class="tableButton" onclick="showForm('delete')">Delete</td>
+                        `;
+                    frag.appendChild(tr);
+                    table.appendChild(frag);
+                }
+            }
+            fillTable();
+
             function showForm(id){
                 if(id=="browse"){
                     document.getElementById("browse").style.display = "block";
@@ -46,38 +68,14 @@
         <main>
             <h2>Playlists</h2>
             <div id="browse">
-                <table>
+                <table id="playlist_table">
                     <tr>
                         <th>Playlist ID</th>
-                        <th>User ID</th>
+                        <th>User Name</th>
                         <th>Playlist Name</th>
                         <th>Playlist Like</th>
                         <th></th>
                         <th></th>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>Hype Songs</td>
-                        <td>12</td>
-                        <td class="tableButton" onclick="showForm('update')">Edit</td>
-                        <td class="tableButton" onclick="showForm('delete')">Delete</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>My First Playlist</td>
-                        <td>3</td>
-                        <td class="tableButton" onclick="showForm('update')">Edit</td>
-                        <td class="tableButton" onclick="showForm('delete')">Delete</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>Workout Music</td>
-                        <td>6</td>
-                        <td class="tableButton" onclick="showForm('update')">Edit</td>
-                        <td class="tableButton" onclick="showForm('delete')">Delete</td>
                     </tr>
                 </table>
                 <button class="insertButton" onClick="showForm('insert')">Insert Playlist</button>

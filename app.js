@@ -31,7 +31,7 @@ app.get('/users', function(req, res){
 
 app.get('/songs', function(req, res){
     // Define our queries
-    query = 'SELECT songID, songName, streamCount, artistID FROM Songs;';
+    query = `SELECT Songs.songID, Songs.songName, Songs.streamCount, Artists.artistName FROM Songs JOIN Artists ON Songs.artistID = Artists.artistID;`;
 
     db.pool.query(query, function (err, results, fields){
         res.send(JSON.stringify(results));
@@ -49,7 +49,9 @@ app.get('/artists', function(req, res){
 
 app.get('/playlists', function(req, res){
     // Define our queries
-    query = 'SELECT playlistID, userID, playlistName, playlistLikes FROM Playlists;';
+    query = `SELECT Playlists.playlistID, Users.userName, Playlists.playlistName, Playlists.playlistLike 
+            FROM Playlists 
+            JOIN Users ON Playlists.userID = Users.userID;`;
 
     db.pool.query(query, function (err, results, fields){
         res.send(JSON.stringify(results));
