@@ -112,8 +112,19 @@ app.post('/deletesong', function(req, res){
         console.log(JSON.stringify(results));
         res.redirect('/songs.html');
     })
-
 });
+
+app.post('/deleteuser', function(req, res){
+    const userID = req.body.userID;
+    console.log(userID);
+    query = `DELETE FROM Users WHERE userID = ${userID};`;
+
+    db.pool.query(query, function (err, results, fields) {
+        console.log(JSON.stringify(results));
+        res.redirect('/users.html');
+    })
+});
+
 
 
 //Update Routes
@@ -137,6 +148,22 @@ app.post('/updatesong', function(req, res){
         res.redirect('/songs.html');
     });
 });
+
+app.post('/updateuser', function(req, res){
+
+    const userID=req.body.userID;
+    const userName=req.body.userName;
+    // Define our queries
+    query = `UPDATE Users SET userName = "${userName}"
+    WHERE userID = ${userID}`;
+
+    db.pool.query(query, function (err, results, fields){
+        console.log(JSON.stringify(results));
+        res.redirect('/users.html');
+    });
+});
+
+
 
 app.get('/artistnames', function(req, res) {
     query = `SELECT artistName FROM Artists`;
