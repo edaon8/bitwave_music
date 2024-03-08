@@ -80,7 +80,7 @@ app.post('/insertsong', function(req, res){
     const artistID=req.body.artistID;
     // Define our queries
     query = `INSERT INTO Songs (songName, streamCount, artistID)
-    VALUES ("${songName}", "${streamCount}", ${artistID});`;
+    VALUES ("${songName}", ${streamCount}, ${artistID});`;
 
     db.pool.query(query, function (err, results, fields){
         console.log(JSON.stringify(results));
@@ -101,6 +101,18 @@ app.post('/insertuser', function(req, res){
     });
 });
 
+app.post('/insertartist', function(req, res){
+    const artistName=req.body.artistName;
+    const streamCount=req.body.streamCount;
+    // Define our queries
+    query = `INSERT INTO Artists (artistName, streamCount)
+    VALUES ("${artistName}", ${streamCount});`;
+
+    db.pool.query(query, function (err, results, fields){
+        console.log(JSON.stringify(results));
+        res.redirect('/artists.html');
+    });
+});
 
 //Delete Routes
 app.post('/deletesong', function(req, res){
@@ -125,13 +137,20 @@ app.post('/deleteuser', function(req, res){
     })
 });
 
+app.post('/deleteartist', function(req, res){
+    const artistID = req.body.artistID;
+    console.log(artistID);
+    query = `DELETE FROM Artists WHERE artistID = ${artistID};`;
+
+    db.pool.query(query, function (err, results, fields) {
+        console.log(JSON.stringify(results));
+        res.redirect('/artists.html');
+    })
+});
 
 
 //Update Routes
 app.post('/updatesong', function(req, res){
-    // const oldSongName=req.body.oldSongName;
-    // const oldArtistID=req.body.oldArtistID;
-    // const oldStreamCount=req.body.oldStreamCount;
     const songID=req.body.songID;
     const songName=req.body.songName;
     const streamCount=req.body.streamCount;
@@ -150,7 +169,6 @@ app.post('/updatesong', function(req, res){
 });
 
 app.post('/updateuser', function(req, res){
-
     const userID=req.body.userID;
     const userName=req.body.userName;
     // Define our queries
@@ -160,6 +178,20 @@ app.post('/updateuser', function(req, res){
     db.pool.query(query, function (err, results, fields){
         console.log(JSON.stringify(results));
         res.redirect('/users.html');
+    });
+});
+
+app.post('/updateartist', function(req, res){
+    const artistID=req.body.artistID;
+    const artistName=req.body.artistName;
+    const streamCount=req.body.streamCount;
+    // Define our queries
+    query = `UPDATE Artists SET artistName = "${artistName}", streamCount = "${streamCount}"
+    WHERE artistID = ${artistID}`;
+
+    db.pool.query(query, function (err, results, fields){
+        console.log(JSON.stringify(results));
+        res.redirect('/artists.html');
     });
 });
 
