@@ -9,23 +9,33 @@
             async function fillTable(){
                 //Fill the table
                 const res = await fetch(`/artists`, { method: 'GET' })
-                const songs = await res.json();
+                const artists = await res.json();
                 let table=document.getElementById("artist_table");
-                for(let i=0;i<songs.length;i++){
+                for(let i=0;i<artists.length;i++){
                     let frag=document.createDocumentFragment();
                     let tr=document.createElement('tr');
                     tr.innerHTML=`
-                            <td>${songs[i]["artistID"]}</td>
-                            <td>${songs[i]["artistName"]}</td>
-                            <td>${songs[i]["streamCount"]}</td>
-                            <td class="tableButton" onclick="showForm('update')">Edit</td>
-                            <td class="tableButton" onclick="showForm('delete')">Delete</td>
+                            <td>${artists[i]["artistID"]}</td>
+                            <td>${artists[i]["artistName"]}</td>
+                            <td>${artists[i]["streamCount"]}</td>
+                            <td class="tableButton" onclick="updateartist(${artists[i]["artistID"]})">Edit</td>
+                            <td class="tableButton" onclick="deleteartist(${artists[i]["artistID"]})">Delete</td>
                         `;
                     frag.appendChild(tr);
                     table.appendChild(frag);
                 }
             }
             fillTable();
+
+            async function deleteartist(artistID) {
+                document.getElementById("deleteartistID").setAttribute('value', artistID);
+                showForm("delete");
+            }
+
+            async function updateartist(artistID) {
+                document.getElementById("updateartistID").setAttribute('value', artistID);
+                showForm("update");
+            }
 
             function showForm(id){
                 if(id=="browse"){
@@ -80,26 +90,26 @@
             </div>
 
             <!-- Update Artist -->
-            <form id="update" style="display:none;">
+            <form id="update" style="display:none;" action="/updateartist" method="post">
                 <legend>Update Artist</legend>
                 <fieldset>
-                    <label>artistID: 1</label>
-                    <input type="hidden" name="artistID" value="1">
+                    <label>artistID: </label>
+                    <input type="hidden" name="artistID" id="updateartistID">
                     <br>
 
                     <label>artistName: </label>
-                    <input type="text" name="artistName" value="Luna Mirage">
+                    <input type="text" name="artistName">
                     <br>
 
                     <label>streamCount: </label>
-                    <input type="text" name="streamCount" value="85430">
+                    <input type="text" name="streamCount">
                 </fieldset>
                 <input type="submit" value="Update Artist" onClick="showForm('browse')">
                 <input type="button" value="Cancel" onClick="showForm('browse')">
             </form>
 
             <!-- Insert Artist -->
-            <form id="insert" style="display:none;">
+            <form id="insert" style="display:none;" action="/insertartist" method="post">
                 <legend>New Artist</legend>
                 <fieldset>
                     <label>artistName: </label>
@@ -114,21 +124,21 @@
             </form>
 
             <!-- Delete Artist -->
-            <form id="delete" style="display:none;">
+            <form id="delete" style="display:none;" action="/deleteartist" method="post">
                 <legend>Delete Artist</legend>
                 <fieldset>
                     <p>Are you sure you want to delete this artist?</p>
 
-                    <label>artistID: </label> 1
-                    <input type="hidden" name="artistID" value="1">
+                    <label>artistID: </label>
+                    <input id="deleteartistID" type="hidden" name="artistID">
                     <br>
 
                     <label>artistName: </label>
-                    <input type="text" name="artistName" value="Luna Mirage">
+                    <input type="text" name="artistName">
                     <br>
 
                     <label>streamCount: </label>
-                    <input type="text" name="streamCount" value="85430">
+                    <input type="text" name="streamCount">
                 </fieldset>
                 <input type="submit" value="Delete Artist" onClick="showForm('browse')">
                 <input type="button" value="Cancel"  onClick="showForm('browse')">
