@@ -29,9 +29,20 @@ app.get('/users', function(req, res){
     });
 });
 
+app.get('/updateuser', function(req, res){
+    const userID = req.body.userID;
+    const userName = req.body.userName;
+
+    query = 'UPDATE Users SET userName = :userName_input WHERE userID = :userID_to_update;';
+    
+    db.pool.query(query, function (err, results, fields){
+        
+    })
+});
+
 app.get('/songs', function(req, res){
     // Define our queries
-    query = `SELECT Songs.songID, Songs.songName, Songs.streamCount, Artists.artistName FROM Songs JOIN Artists ON Songs.artistID = Artists.artistID;`;
+    query = `SELECT Songs.songID, Songs.songName, Songs.streamCount, Artists.artistName FROM Songs JOIN Artists ON Songs.artistID = Artists.artistID ORDER BY Songs.artistID ASC;`;
 
     db.pool.query(query, function (err, results, fields){
         res.send(JSON.stringify(results));
@@ -88,6 +99,50 @@ app.post('/insertsong', function(req, res){
     db.pool.query(query, function (err, results, fields){
         console.log(JSON.stringify(results));
         res.redirect('/songs.html');
+    });
+});
+
+//Delete Routes
+app.post('/deletesong', function(req, res){
+    const songID = req.body.songID;
+    console.log(songID);
+    query = `DELETE FROM Songs WHERE songID = ${songID};`;
+
+    db.pool.query(query, function (err, results, fields) {
+        console.log(JSON.stringify(results));
+        res.redirect('/songs.html');
+    })
+
+});
+
+
+//Update Routes
+app.post('/updatesong', function(req, res){
+    // const oldSongName=req.body.oldSongName;
+    // const oldArtistID=req.body.oldArtistID;
+    // const oldStreamCount=req.body.oldStreamCount;
+    const songID=req.body.songID;
+    const songName=req.body.songName;
+    const streamCount=req.body.streamCount;
+    const artistName=req.body.artistName;
+    console.log(songName, songID, streamCount, artistName);
+    // Define our queries
+    query = `UPDATE Songs
+    SET songName = "${songName}", streamCount = ${streamCount}, 
+    artistID = (SELECT artistID FROM Artists WHERE artistName = "${artistName}")
+    WHERE songID = ${songID};`
+
+    db.pool.query(query, function (err, results, fields){
+        console.log(JSON.stringify(results));
+        res.redirect('/songs.html');
+    });
+});
+
+app.get('/artistnames', function(req, res) {
+    query = `SELECT artistName FROM Artists`;
+
+    db.pool.query(query, function (err, results, fields){
+        res.send(JSON.stringify(results));
     });
 });
 
