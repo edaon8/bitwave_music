@@ -71,7 +71,13 @@ app.get('/playlists', function(req, res){
 
 app.get('/playlistsongs', function(req, res){
     // Define our queries
-    query = 'SELECT playlistSongsID, playlistID, songID FROM PlaylistSongs;';
+    query = `SELECT
+                PlaylistSongs.playlistSongsID,
+                Playlists.playlistName,
+                Songs.songName
+            FROM PlaylistSongs
+            JOIN Playlists ON PlaylistSongs.playlistID = Playlists.playlistID
+            JOIN Songs ON PlaylistSongs.songID = Songs.songID;`;
 
     db.pool.query(query, function (err, results, fields){
         res.send(JSON.stringify(results));
@@ -84,12 +90,15 @@ app.post('/insertsong', function(req, res){
     const streamCount=req.body.streamCount;
     const artistID=req.body.artistID;
     console.log(songName);
+    console.log(streamCount);
+    console.log(artistID);
     // Define our queries
     query = `INSERT INTO Songs (songName, streamCount, artistID)
-    VALUES (${songName}, ${streamCount}, ${artistID});`;
+    VALUES ("${songName}", "${streamCount}", ${artistID});`;
 
     db.pool.query(query, function (err, results, fields){
-        res.send();
+        console.log(JSON.stringify(results));
+        res.redirect('/songs.html');
     });
 });
 
