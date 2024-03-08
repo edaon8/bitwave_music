@@ -8,7 +8,7 @@ const path = require('path');
 var db = require('./db-connector');
 
 var app = express();   
-PORT = 6124;             
+PORT = 6125;             
 
 // Database
 // var db = require('./database/db-connector')
@@ -19,7 +19,7 @@ app.use(express.urlencoded({
 
 app.use(express.static('public'));
 
-//Insert Routes
+//Read Routes
 app.get('/users', function(req, res){
     // Define our queries
     query = 'SELECT userID, userName FROM Users;';
@@ -27,17 +27,6 @@ app.get('/users', function(req, res){
     db.pool.query(query, function (err, results, fields){
         res.send(JSON.stringify(results));
     });
-});
-
-app.get('/updateuser', function(req, res){
-    const userID = req.body.userID;
-    const userName = req.body.userName;
-
-    query = 'UPDATE Users SET userName = :userName_input WHERE userID = :userID_to_update;';
-    
-    db.pool.query(query, function (err, results, fields){
-        
-    })
 });
 
 app.get('/songs', function(req, res){
@@ -89,9 +78,6 @@ app.post('/insertsong', function(req, res){
     const songName=req.body.songName;
     const streamCount=req.body.streamCount;
     const artistID=req.body.artistID;
-    console.log(songName);
-    console.log(streamCount);
-    console.log(artistID);
     // Define our queries
     query = `INSERT INTO Songs (songName, streamCount, artistID)
     VALUES ("${songName}", "${streamCount}", ${artistID});`;
@@ -101,6 +87,20 @@ app.post('/insertsong', function(req, res){
         res.redirect('/songs.html');
     });
 });
+
+app.post('/insertuser', function(req, res){
+    const userName=req.body.userName;
+    console.log(userName);
+    // Define our queries
+    query = `INSERT INTO Users (userName)
+    VALUES ("${userName}");`;
+
+    db.pool.query(query, function (err, results, fields){
+        console.log(JSON.stringify(results));
+        res.redirect('/users.html');
+    });
+});
+
 
 //Delete Routes
 app.post('/deletesong', function(req, res){
