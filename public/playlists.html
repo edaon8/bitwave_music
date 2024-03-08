@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="index.css">
+        <title>BitWave Music Admin</title>
+        <script>
+            function showForm(id){
+                if(id=="browse"){
+                    document.getElementById("browse").style.display = "block";
+                    document.getElementById("update").style.display = "none";
+                    document.getElementById("insert").style.display = "none";
+                    document.getElementById("delete").style.display = "none";
+                }else if(id=="update"){
+                    document.getElementById("browse").style.display = "none";
+                    document.getElementById("update").style.display = "inline-block";
+                    document.getElementById("insert").style.display = "none";
+                    document.getElementById("delete").style.display = "none";
+                }else if(id=="insert"){
+                    document.getElementById("browse").style.display = "none";
+                    document.getElementById("update").style.display = "none";
+                    document.getElementById("insert").style.display = "inline-block";
+                    document.getElementById("delete").style.display = "none";
+                }else if(id=="delete"){
+                    document.getElementById("browse").style.display = "none";
+                    document.getElementById("update").style.display = "none";
+                    document.getElementById("insert").style.display = "none";
+                    document.getElementById("delete").style.display = "inline-block";
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <header>
+            <h1>BitWave Music Admin Portal</h1>
+        </header>
+        <nav>
+            <a href="index.html">HOME</a>
+            <a href="users.html">USERS</a>
+            <a href="songs.html">SONGS</a>
+            <a href="artists.html">ARTISTS</a>
+            <a href="playlists.html">PLAYLISTS</a>
+            <a href="playlistsongs.html">PLAYLIST SONGS</a>
+        </nav>
+        <main>
+            <h2>Playlists</h2>
+            <div id="browse">
+                <table>
+                    <tr>
+                        <th>Playlist ID</th>
+                        <th>User ID</th>
+                        <th>Playlist Name</th>
+                        <th>Playlist Like</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>Hype Songs</td>
+                        <td>12</td>
+                        <td class="tableButton" onclick="showForm('update')">Edit</td>
+                        <td class="tableButton" onclick="showForm('delete')">Delete</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>My First Playlist</td>
+                        <td>3</td>
+                        <td class="tableButton" onclick="showForm('update')">Edit</td>
+                        <td class="tableButton" onclick="showForm('delete')">Delete</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>3</td>
+                        <td>Workout Music</td>
+                        <td>6</td>
+                        <td class="tableButton" onclick="showForm('update')">Edit</td>
+                        <td class="tableButton" onclick="showForm('delete')">Delete</td>
+                    </tr>
+                </table>
+                <button class="insertButton" onClick="showForm('insert')">Insert Playlist</button>
+            </div>
+
+            <!-- Update Playlist -->
+            <form id="update" style="display:none;">
+                <legend>Update Playlist</legend>
+                <fieldset>
+                    <label>playlistID: 1</label>
+                    <input type="hidden" name="playlistID" value="1">
+                    <br>
+
+                    <label>userID: </label>
+                    <select name="userID">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                    </select>
+                    <br>
+
+                    <label>playlistName: </label>
+                    <input type="text" name="playlistName" value="Hype Songs">
+                    <br>
+
+                    <label>playlistLike: </label>
+                    <input type="text" name="playlistLike" value="12">
+                </fieldset>
+                <input type="submit" value="Update Playlist" onClick="showForm('browse')">
+                <input type="button" value="Cancel" onClick="showForm('browse')">
+            </form>
+
+            <!-- Insert Playlist -->
+            <form id="insert" style="display:none;">
+                <legend>New Playlist</legend>
+                <fieldset>
+                    <label>userID: </label>
+                    <select name="userID">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                    </select>
+                    <br>
+
+                    <label>playlistName: </label>
+                    <input type="text" name="playlistName">
+                    <br>
+
+                    <label>playlistLike: </label>
+                    <input type="text" name="playlistLike">
+                </fieldset>
+                <input type="submit" value="Add Playlist" onClick="showForm('browse')">
+                <input type="button" value="Cancel"  onClick="showForm('browse')">
+            </form>
+
+            <!-- Delete Playlist -->
+            <form id="delete" style="display:none;">
+                <legend>Delete Playlist</legend>
+                <fieldset>
+                    <p>Are you sure you want to delete this playlist?</p>
+
+                    <label>playlistID: 1</label>
+                    <input type="hidden" name="playlistID" value="1">
+                    <br>
+
+                    <label>userID: </label>
+                    <select name="userID">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                    </select>
+                    <br>
+
+                    <label>playlistName: </label>
+                    <input type="text" name="playlistName" value="Hype Songs">
+                    <br>
+
+                    <label>playlistLike: </label>
+                    <input type="text" name="playlistLike" value="12">
+                </fieldset>
+                <input type="submit" value="Delete Playlist" onClick="showForm('browse')">
+                <input type="button" value="Cancel"  onClick="showForm('browse')">
+            </form>
+        </main>
+        <footer>
+            <p>&copy; 2024 BitWave Music</p>
+        </footer>
+    </body>
+</html>

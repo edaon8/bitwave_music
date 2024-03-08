@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="index.css">
+        <title>BitWave Music Admin</title>
+        <script>
+            async function fillTable(){
+                //Fill the table
+                const res = await fetch(`/artists`, { method: 'GET' })
+                const songs = await res.json();
+                let table=document.getElementById("artist_table");
+                for(let i=0;i<songs.length;i++){
+                    let frag=document.createDocumentFragment();
+                    let tr=document.createElement('tr');
+                    tr.innerHTML=`
+                            <td>${songs[i]["artistID"]}</td>
+                            <td>${songs[i]["artistName"]}</td>
+                            <td>${songs[i]["streamCount"]}</td>
+                            <td class="tableButton" onclick="showForm('update')">Edit</td>
+                            <td class="tableButton" onclick="showForm('delete')">Delete</td>
+                        `;
+                    frag.appendChild(tr);
+                    table.appendChild(frag);
+                }
+            }
+            fillTable();
+
+            function showForm(id){
+                if(id=="browse"){
+                    document.getElementById("browse").style.display = "block";
+                    document.getElementById("update").style.display = "none";
+                    document.getElementById("insert").style.display = "none";
+                    document.getElementById("delete").style.display = "none";
+                }else if(id=="update"){
+                    document.getElementById("browse").style.display = "none";
+                    document.getElementById("update").style.display = "inline-block";
+                    document.getElementById("insert").style.display = "none";
+                    document.getElementById("delete").style.display = "none";
+                }else if(id=="insert"){
+                    document.getElementById("browse").style.display = "none";
+                    document.getElementById("update").style.display = "none";
+                    document.getElementById("insert").style.display = "inline-block";
+                    document.getElementById("delete").style.display = "none";
+                }else if(id=="delete"){
+                    document.getElementById("browse").style.display = "none";
+                    document.getElementById("update").style.display = "none";
+                    document.getElementById("insert").style.display = "none";
+                    document.getElementById("delete").style.display = "inline-block";
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <header>
+            <h1>BitWave Music Admin Portal</h1>
+        </header>
+        <nav>
+            <a href="index.html">HOME</a>
+            <a href="users.html">USERS</a>
+            <a href="songs.html">SONGS</a>
+            <a href="artists.html">ARTISTS</a>
+            <a href="playlists.html">PLAYLISTS</a>
+            <a href="playlistsongs.html">PLAYLIST SONGS</a>
+        </nav>
+        <main>
+            <h2>Artists</h2>
+            <div id="browse">
+                <table id="artist_table">
+                    <tr>
+                        <th>Artist ID</th>
+                        <th>Artist Name</th>
+                        <th>Stream Count</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </table>
+                <button class="insertButton" onClick="showForm('insert')">Insert Artist</button>
+            </div>
+
+            <!-- Update Artist -->
+            <form id="update" style="display:none;">
+                <legend>Update Artist</legend>
+                <fieldset>
+                    <label>artistID: 1</label>
+                    <input type="hidden" name="artistID" value="1">
+                    <br>
+
+                    <label>artistName: </label>
+                    <input type="text" name="artistName" value="Luna Mirage">
+                    <br>
+
+                    <label>streamCount: </label>
+                    <input type="text" name="streamCount" value="85430">
+                </fieldset>
+                <input type="submit" value="Update Artist" onClick="showForm('browse')">
+                <input type="button" value="Cancel" onClick="showForm('browse')">
+            </form>
+
+            <!-- Insert Artist -->
+            <form id="insert" style="display:none;">
+                <legend>New Artist</legend>
+                <fieldset>
+                    <label>artistName: </label>
+                    <input type="text" name="artistName">
+                    <br>
+
+                    <label>streamCount: </label>
+                    <input type="text" name="streamCount">
+                </fieldset>
+                <input type="submit" value="Add Artist" onClick="showForm('browse')">
+                <input type="button" value="Cancel"  onClick="showForm('browse')">
+            </form>
+
+            <!-- Delete Artist -->
+            <form id="delete" style="display:none;">
+                <legend>Delete Artist</legend>
+                <fieldset>
+                    <p>Are you sure you want to delete this artist?</p>
+
+                    <label>artistID: </label> 1
+                    <input type="hidden" name="artistID" value="1">
+                    <br>
+
+                    <label>artistName: </label>
+                    <input type="text" name="artistName" value="Luna Mirage">
+                    <br>
+
+                    <label>streamCount: </label>
+                    <input type="text" name="streamCount" value="85430">
+                </fieldset>
+                <input type="submit" value="Delete Artist" onClick="showForm('browse')">
+                <input type="button" value="Cancel"  onClick="showForm('browse')">
+            </form>
+        </main>
+        <footer>
+            <p>&copy; 2024 BitWave Music</p>
+        </footer>
+    </body>
+</html>

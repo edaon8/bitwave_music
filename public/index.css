@@ -1,0 +1,103 @@
+body{
+    margin:0;
+}
+
+header{
+    background-color: black;
+    padding:10px;
+}
+h1{
+    color:rgb(14, 171, 56);
+    text-align:center;
+}
+
+nav{
+    background-color: black;
+    color:white;
+    display:flex;
+    justify-content: center;
+}
+
+nav a{
+    text-decoration: none;
+    color:white;
+    padding:10px 20px;
+}
+nav a:hover{
+    background-color: rgb(14, 171, 56);
+    border:2px solid white;
+}
+
+main{
+    padding:20px;
+    text-align:center;
+}
+
+footer{
+    background-color:black;
+    color:white;
+    padding:7px;
+    text-align:center;
+}
+
+
+table{
+    border: 2px solid black;
+    margin-left:auto;
+    margin-right:auto;
+    border-collapse:collapse;
+}
+th{
+    padding:15px 10px;
+    color:white;
+    background-color:black;
+}
+td{
+    padding:15px 10px;
+}
+tr th{
+    border-right: 1px solid white;
+}
+tr th:last-child{
+    border:none;
+}
+tr{
+    border-bottom:1px solid rgb(165, 165, 165);
+}
+tr td{
+    border-right:1px solid rgb(165, 165, 165);
+}
+tr td:last-child{
+    border-right:none;
+}
+
+form{
+    max-width: 50%;
+}
+fieldset{
+    padding:30px;
+}
+form input{
+    margin-top:10px;
+}
+form select{
+    margin-top:10px;
+    min-width: 50px;
+}
+label{
+    font-weight: bold;
+}
+legend{
+    font-weight:bold;
+}
+
+.insertButton{
+    margin-top:10px;
+}
+.tableButton{
+    font-weight: bold;
+}
+.tableButton:hover{
+    color:white;
+    background-color: rgb(14, 171, 56);
+}
