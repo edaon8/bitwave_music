@@ -6,10 +6,11 @@
         <link rel="stylesheet" href="index.css">
         <title>BitWave Music Admin</title>
         <script>
+            let playlists;
             async function fillTable(){
                 //Fill the table
                 const res = await fetch(`/playlists`, { method: 'GET' })
-                const playlists = await res.json();
+                playlists = await res.json();
                 let table=document.getElementById("playlist_table");
                 for(let i=0;i<playlists.length;i++){
                     let frag=document.createDocumentFragment();
@@ -19,7 +20,7 @@
                             <td>${playlists[i]["userName"]}</td>
                             <td>${playlists[i]["playlistName"]}</td>
                             <td>${playlists[i]["playlistLike"]}</td>
-                            <td class="tableButton" onclick="updateplaylist(${playlists[i]["playlistID"]})">Edit</td>
+                            <td class="tableButton" onclick="updateplaylist(${playlists[i]["playlistID"]}, \'${playlists[i]["playlistName"]}\', ${playlists[i]["playlistLike"]})">Edit</td>
                             <td class="tableButton" onclick="deleteplaylist(${playlists[i]["playlistID"]})">Delete</td>
                         `;
                     frag.appendChild(tr);
@@ -34,8 +35,10 @@
                 showForm("delete");
             }
 
-            async function updateplaylist(playlistID) {
+            async function updateplaylist(playlistID, playlistName, playlistLike) {
                 document.getElementById("updatePlaylistID").setAttribute('value', playlistID);
+                document.getElementById("updatePlaylistName").setAttribute('value', playlistName);
+                document.getElementById("updatePlaylistLike").setAttribute('value', playlistLike);
                 showForm("update");
             }
 
@@ -126,11 +129,11 @@
                     <br>
 
                     <label>Playlist Name: </label>
-                    <input type="text" name="playlistName">
+                    <input type="text" name="playlistName" id="updatePlaylistName">
                     <br>    
 
                     <label>Playlist Likes: </label>
-                    <input type="text" name="playlistLike">
+                    <input type="text" name="playlistLike" id="updatePlaylistLike">
                 </fieldset>
                 <input type="submit" value="Update Playlist" onClick="showForm('browse')">
                 <input type="button" value="Cancel" onClick="showForm('browse')">

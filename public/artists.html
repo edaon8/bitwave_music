@@ -6,10 +6,11 @@
         <link rel="stylesheet" href="index.css">
         <title>BitWave Music Admin</title>
         <script>
+            let artists;
             async function fillTable(){
                 //Fill the table
                 const res = await fetch(`/artists`, { method: 'GET' })
-                const artists = await res.json();
+                artists = await res.json();
                 let table=document.getElementById("artist_table");
                 for(let i=0;i<artists.length;i++){
                     let frag=document.createDocumentFragment();
@@ -18,7 +19,7 @@
                             <td>${artists[i]["artistID"]}</td>
                             <td>${artists[i]["artistName"]}</td>
                             <td>${artists[i]["streamCount"]}</td>
-                            <td class="tableButton" onclick="updateartist(${artists[i]["artistID"]})">Edit</td>
+                            <td class="tableButton" onclick="updateartist(${artists[i]["artistID"]}, \'${artists[i]["artistName"]}\', ${artists[i]["streamCount"]})">Edit</td>
                             <td class="tableButton" onclick="deleteartist(${artists[i]["artistID"]})">Delete</td>
                         `;
                     frag.appendChild(tr);
@@ -32,8 +33,10 @@
                 showForm("delete");
             }
 
-            async function updateartist(artistID) {
+            async function updateartist(artistID, artistName, streamCount) {
                 document.getElementById("updateartistID").setAttribute('value', artistID);
+                document.getElementById("updateartistName").setAttribute('value', artistName);
+                document.getElementById("updateartistStream").setAttribute('value', streamCount);
                 showForm("update");
             }
 
@@ -98,11 +101,11 @@
                     <br>
 
                     <label>Artist Name: </label>
-                    <input type="text" name="artistName">
+                    <input type="text" name="artistName" id="updateartistName">
                     <br>
 
                     <label>Stream Count: </label>
-                    <input type="text" name="streamCount">
+                    <input type="text" name="streamCount" id="updateartistStream">
                 </fieldset>
                 <input type="submit" value="Update Artist" onClick="showForm('browse')">
                 <input type="button" value="Cancel" onClick="showForm('browse')">

@@ -6,10 +6,11 @@
         <link rel="stylesheet" href="index.css">
         <title>BitWave Music Admin</title>
         <script>
+            let users;
             async function fillTable(){
                 //Fill the table
                 const res = await fetch(`/users`, { method: 'GET' })
-                const users = await res.json();
+                users = await res.json();
                 let table=document.getElementById("user_table");
                 for(let i=0;i<users.length;i++){
                     let frag=document.createDocumentFragment();
@@ -17,7 +18,7 @@
                     tr.innerHTML=`
                             <td>${users[i]["userID"]}</td>
                             <td>${users[i]["userName"]}</td>
-                            <td class="tableButton" onclick="updateuser(${users[i]["userID"]})">Edit</td>
+                            <td class="tableButton" onclick="updateuser(${users[i]["userID"]}, \'${users[i]["userName"]}\')">Edit</td>
                             <td class="tableButton" onclick="deleteuser(${users[i]["userID"]})">Delete</td>
                         `;
                     frag.appendChild(tr);
@@ -32,8 +33,9 @@
                 showForm("delete");
             }
 
-            async function updateuser(userID) {
+            async function updateuser(userID, userName) {
                 document.getElementById("updateuserID").setAttribute('value', userID);
+                document.getElementById("updateUserName").setAttribute('value', userName);
                 showForm("update");
             }
 
@@ -97,7 +99,7 @@
                     <br>
 
                     <label>Username: </label>
-                    <input type="text" name="userName">
+                    <input type="text" name="userName" id="updateUserName">
                 </fieldset>
                 <input type="submit" value="Update User" onClick="showForm('browse')">
                 <input type="button" value="Cancel" onClick="showForm('browse')">

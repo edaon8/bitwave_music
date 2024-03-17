@@ -6,10 +6,11 @@
         <link rel="stylesheet" href="index.css">
         <title>BitWave Music Admin</title>
         <script>
+            let songs;
             async function fillTable(){
                 //Fill the table
                 const res = await fetch(`/songs`, { method: 'GET' })
-                const songs = await res.json();
+                songs = await res.json();
                 let table=document.getElementById("song_table");
                 for(let i=0;i<songs.length;i++){
                     let frag=document.createDocumentFragment();
@@ -19,7 +20,7 @@
                             <td>${songs[i]["songName"]}</td>
                             <td>${songs[i]["streamCount"]}</td>
                             <td>${songs[i]["artistName"]}</td>
-                            <td class="tableButton" onclick="updatesong(${songs[i]["songID"]})">Edit</td>
+                            <td class="tableButton" onclick="updatesong(${songs[i]["songID"]}, \'${songs[i]["songName"]}\', ${songs[i]["streamCount"]})">Edit</td>
                             <td class="tableButton" onclick="deletesong(${songs[i]["songID"]})">Delete</td>
                         `;
                     frag.appendChild(tr);
@@ -34,8 +35,10 @@
                 showForm("delete");
             }
 
-            async function updatesong(songID) {
+            async function updatesong(songID, songName, streamCount) {
                 document.getElementById("updatesongID").setAttribute('value', songID);
+                document.getElementById("updatesongName").setAttribute('value', songName);
+                document.getElementById("updatesongStream").setAttribute('value', streamCount);
                 showForm("update");
             }
 
@@ -122,11 +125,11 @@
                     <br>
 
                     <label>Song Name: </label>
-                    <input type="text" name="songName">
+                    <input type="text" name="songName" id="updatesongName">
                     <br>
 
                     <label>Stream Count: </label>
-                    <input type="text" name="streamCount">
+                    <input type="text" name="streamCount" id="updatesongStream">
                     <br>
 
                     <label>Artist Name: </label>
