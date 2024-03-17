@@ -1,15 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 body{
     margin:0;
     padding-bottom: 64px;
+    font-family: "Poppins", sans-serif;
 }
 
 header{
     background-color: black;
+    /* font-family: "Poppins", sans-serif; */
+    font-weight: 500;
     padding:10px;
 }
+
 h1{
     color:rgb(14, 171, 56);
+    font-size: 300%;
     text-align:center;
+}
+
+h2{
+    font-size: 200%;
 }
 
 nav{
@@ -23,6 +34,7 @@ nav a{
     text-decoration: none;
     color:white;
     padding:10px 20px;
+    border: 2px solid black;
 }
 nav a:hover{
     background-color: rgb(14, 171, 56);
@@ -30,7 +42,7 @@ nav a:hover{
 }
 
 main{
-    padding:20px;
+    padding-bottom: 20px;
     text-align:center;
     /* min-height: 90vh; */
 }
@@ -44,7 +56,6 @@ footer{
     bottom: 0;
     width: 100%;
 }
-
 
 table{
     border: 2px solid black;
@@ -104,5 +115,21 @@ legend{
 }
 .tableButton:hover{
     color:white;
+    background-color: rgb(14, 171, 56);
+}
+
+#welcome {
+    font-size: 150%;
+}
+
+button{
+    font-family: "Poppins", sans-serif;
+    min-height: 35px;
+    font-weight: bold;
+    background-color: white;
+}
+
+button:hover {
+    color: white;
     background-color: rgb(14, 171, 56);
 }
