@@ -20,7 +20,7 @@
                             <td>${songs[i]["songName"]}</td>
                             <td>${songs[i]["streamCount"]}</td>
                             <td>${songs[i]["artistName"]}</td>
-                            <td class="tableButton" onclick="updatesong(${songs[i]["songID"]}, \'${songs[i]["songName"]}\', ${songs[i]["streamCount"]})">Edit</td>
+                            <td class="tableButton" onclick="updatesong(${songs[i]["songID"]}, \'${songs[i]["songName"]}\', ${songs[i]["streamCount"]}, \'${songs[i]["artistName"]}\')">Edit</td>
                             <td class="tableButton" onclick="deletesong(${songs[i]["songID"]})">Delete</td>
                         `;
                     frag.appendChild(tr);
@@ -35,10 +35,12 @@
                 showForm("delete");
             }
 
-            async function updatesong(songID, songName, streamCount) {
+            async function updatesong(songID, songName, streamCount, artistName) {
                 document.getElementById("updatesongID").setAttribute('value', songID);
                 document.getElementById("updatesongName").setAttribute('value', songName);
                 document.getElementById("updatesongStream").setAttribute('value', streamCount);
+                document.getElementById("artistMenuUpdate").value = artistName;
+                document.getElementById("updatesonglabel").innerHTML = "Song ID: " + songID;
                 showForm("update");
             }
 
@@ -120,7 +122,7 @@
             <form id="update" style="display:none;" action="/updatesong" method="post">
                 <legend>Update Song</legend>
                 <fieldset>
-                    <label>Song ID: </label>
+                    <label id="updatesonglabel">Song ID: </label>
                     <input type="hidden" name="songID" id="updatesongID">
                     <br>
 

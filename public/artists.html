@@ -37,6 +37,7 @@
                 document.getElementById("updateartistID").setAttribute('value', artistID);
                 document.getElementById("updateartistName").setAttribute('value', artistName);
                 document.getElementById("updateartistStream").setAttribute('value', streamCount);
+                document.getElementById("updateartistlabel").innerHTML = "Artist ID: " + artistID;
                 showForm("update");
             }
 
@@ -96,7 +97,7 @@
             <form id="update" style="display:none;" action="/updateartist" method="post">
                 <legend>Update Artist</legend>
                 <fieldset>
-                    <label>artistID: </label>
+                    <label id="updateartistlabel">Artist ID: </label>
                     <input type="hidden" name="artistID" id="updateartistID">
                     <br>
 

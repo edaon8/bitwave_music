@@ -36,6 +36,7 @@
             async function updateuser(userID, userName) {
                 document.getElementById("updateuserID").setAttribute('value', userID);
                 document.getElementById("updateUserName").setAttribute('value', userName);
+                document.getElementById("updateuserlabel").innerHTML = "User ID: " + userID;
                 showForm("update");
             }
 
@@ -95,6 +96,7 @@
             <form id="update" style="display:none;" action="/updateuser" method="post">
                 <legend>Update User</legend>
                 <fieldset>
+                    <label id="updateuserlabel">User ID: </label>
                     <input type="hidden" name="userID" id="updateuserID">
                     <br>
 

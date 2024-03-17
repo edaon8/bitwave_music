@@ -133,3 +133,39 @@ button:hover {
     color: white;
     background-color: rgb(14, 171, 56);
 }
+
+input{
+    font-family: "Poppins", sans-serif;
+}
+
+form input[type="button"] {
+    min-height: 30px;
+    font-weight: bold;
+    background-color: white;
+    border: solid black 2px;
+    padding: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+form input[type="button"]:hover{
+    color: white;
+    background-color: rgb(14, 171, 56);
+}
+
+form input[type="submit"] {
+    min-height: 30px;
+    font-weight: bold;
+    background-color: white;
+    border: solid black 2px;
+    padding: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+form input[type="submit"]:hover{
+    color: white;
+    background-color: rgb(14, 171, 56);
+}
+
+select{
+    font-family: "Poppins", sans-serif;
+}

@@ -20,7 +20,7 @@
                             <td>${playlists[i]["userName"]}</td>
                             <td>${playlists[i]["playlistName"]}</td>
                             <td>${playlists[i]["playlistLike"]}</td>
-                            <td class="tableButton" onclick="updateplaylist(${playlists[i]["playlistID"]}, \'${playlists[i]["playlistName"]}\', ${playlists[i]["playlistLike"]})">Edit</td>
+                            <td class="tableButton" onclick="updateplaylist(${playlists[i]["playlistID"]}, \'${playlists[i]["playlistName"]}\', ${playlists[i]["playlistLike"]}, \'${playlists[i]["userName"]}\')">Edit</td>
                             <td class="tableButton" onclick="deleteplaylist(${playlists[i]["playlistID"]})">Delete</td>
                         `;
                     frag.appendChild(tr);
@@ -35,10 +35,12 @@
                 showForm("delete");
             }
 
-            async function updateplaylist(playlistID, playlistName, playlistLike) {
+            async function updateplaylist(playlistID, playlistName, playlistLike, userName) {
                 document.getElementById("updatePlaylistID").setAttribute('value', playlistID);
                 document.getElementById("updatePlaylistName").setAttribute('value', playlistName);
                 document.getElementById("updatePlaylistLike").setAttribute('value', playlistLike);
+                document.getElementById("playlistMenuUpdate").value = userName;
+                document.getElementById("updateplaylistlabel").innerHTML = "Playlist ID: " + playlistID;
                 showForm("update");
             }
 
@@ -119,7 +121,7 @@
             <form id="update" style="display:none;" action="/updateplaylist" method="post">
                 <legend>Update Playlist</legend>
                 <fieldset>
-                    <label>playlistID: </label>
+                    <label id="updateplaylistlabel">Playlist ID: </label>
                     <input type="hidden" name="playlistID" id="updatePlaylistID">
                     <br>
 
