@@ -77,11 +77,13 @@ app.get('/playlistsongs', function(req, res){
 app.post('/insertsong', function(req, res){
     const songName=req.body.songName;
     const streamCount=req.body.streamCount;
-    const artistID=req.body.artistID;
+    const artistName=req.body.artistName;
     // Define our queries
     query = `INSERT INTO Songs (songName, streamCount, artistID)
-    VALUES ("${songName}", ${streamCount}, ${artistID});`;
-
+    VALUES ("${songName}", ${streamCount}, 
+    (SELECT artistID FROM Artists WHERE artistName = "${artistName}")
+    );`;
+    console.log(songName, streamCount, artistName);
     db.pool.query(query, function (err, results, fields){
         console.log(JSON.stringify(results));
         res.redirect('/songs.html');
@@ -115,12 +117,14 @@ app.post('/insertartist', function(req, res){
 });
 
 app.post('/insertplaylist', function(req, res){
-    const userID=req.body.userID;
+    const userName=req.body.userName;
     const playlistName=req.body.playlistName;
     const playlistLike=req.body.playlistLike;
     // Define our queries
     query = `INSERT INTO Playlists (userID, playlistName, playlistLike)
-    VALUES (${userID}, "${playlistName}", ${playlistLike});`;
+    VALUES ((SELECT userID FROM Users WHERE userName = "${userName}"), 
+        "${playlistName}", ${playlistLike});`;
+    console.log(userName, playlistName, playlistLike);
 
     db.pool.query(query, function (err, results, fields){
         console.log(JSON.stringify(results));
@@ -221,16 +225,17 @@ app.post('/updateartist', function(req, res){
 
 app.post('/updateplaylist', function(req, res){
     const playlistID=req.body.playlistID;
-    const userID=req.body.userID;
+    const userName=req.body.userName;
     const playlistName=req.body.playlistName;
     const playlistLike=req.body.playlistLike;
     // Define our queries
     query = `UPDATE Playlists
     SET userID = (
-        SELECT userName FROM Users WHERE userID = ${userID}
-    ), playlistName = "${playlistName}", 
-    playlistLike = ${playlistLike}
-    WHERE playlistID = ${playlistID};`
+            SELECT userID FROM Users WHERE userName = "${userName}"
+        ), 
+        playlistName = "${playlistName}", 
+        playlistLike = ${playlistLike}
+        WHERE playlistID = ${playlistID};`;
 
     db.pool.query(query, function (err, results, fields){
         console.log(JSON.stringify(results));
