@@ -9,24 +9,84 @@
             async function fillTable(){
                 //Fill the table
                 const res = await fetch(`/playlistsongs`, { method: 'GET' })
-                const songs = await res.json();
-                console.log(songs);
+                const playlistsongs = await res.json();
+                console.log(playlistsongs);
                 let table=document.getElementById("playlistsong_table");
-                for(let i=0;i<songs.length;i++){
+                for(let i=0;i<playlistsongs.length;i++){
                     let frag=document.createDocumentFragment();
                     let tr=document.createElement('tr');
                     tr.innerHTML=`
-                            <td>${songs[i]["playlistSongsID"]}</td>
-                            <td>${songs[i]["playlistName"]}</td>
-                            <td>${songs[i]["songName"]}</td>
-                            <td class="tableButton" onclick="showForm('update')">Edit</td>
-                            <td class="tableButton" onclick="showForm('delete')">Delete</td>
+                            <td>${playlistsongs[i]["playlistSongsID"]}</td>
+                            <td>${playlistsongs[i]["playlistName"]}</td>
+                            <td>${playlistsongs[i]["songName"]}</td>
+                            <td class="tableButton" onclick="updatePlaylistSong(${playlistsongs[i]["playlistSongsID"]}, \'${playlistsongs[i]["playlistName"]}\', \'${playlistsongs[i]["songName"]}\')">Edit</td>
+                            <td class="tableButton" onclick="deletePlaylistSong(${playlistsongs[i]["playlistSongsID"]})">Delete</td>
                         `;
                     frag.appendChild(tr);
                     table.appendChild(frag);
                 }
             }
             fillTable();
+
+            async function deletePlaylistSong(playlistSongsID) {
+                document.getElementById("deletePlaylistSongsID").setAttribute('value', playlistSongsID);
+                showForm("delete");
+            }
+
+            async function updatePlaylistSong(playlistSongsID, playlistName, songName) {
+                document.getElementById("updatePlaylistSongsID").setAttribute('value', playlistSongsID);
+                document.getElementById("playlistMenuUpdate").value = playlistName;
+                document.getElementById("songMenuUpdate").value = songName;
+                showForm("update");
+            }
+
+            async function fillDropDown() {
+                fillSongMenu();
+                fillPlaylistMenu();
+            }
+            fillDropDown();
+
+            async function fillSongMenu(){
+                //Fill the song menus
+                const res = await fetch(`/songnames`, { method: 'GET' })
+                const songnames = await res.json();
+                let dropdown1=document.getElementById("songMenuUpdate");
+                let dropdown2=document.getElementById("songMenuDelete");
+                console.log(songnames);
+                for(let i=0;i<songnames.length;i++){
+                    let frag1=document.createDocumentFragment();
+                    let frag2=document.createDocumentFragment();
+                    let option1=document.createElement('option');
+                    let option2=document.createElement('option');
+                    option1.textContent=songnames[i]["songName"];
+                    option2.textContent=songnames[i]["songName"];
+                    frag1.appendChild(option1);
+                    frag2.appendChild(option2);
+                    dropdown1.appendChild(frag1);
+                    dropdown2.appendChild(frag2);
+                }
+            }
+
+            async function fillPlaylistMenu(){
+                //Fill the song menus
+                const res = await fetch(`/playlistnames`, { method: 'GET' })
+                const playlistnames = await res.json();
+                let dropdown1=document.getElementById("playlistMenuUpdate");
+                let dropdown2=document.getElementById("playlistMenuDelete");
+                console.log(playlistnames);
+                for(let i=0;i<playlistnames.length;i++){
+                    let frag1=document.createDocumentFragment();
+                    let frag2=document.createDocumentFragment();
+                    let option1=document.createElement('option');
+                    let option2=document.createElement('option');
+                    option1.textContent=playlistnames[i]["playlistName"];
+                    option2.textContent=playlistnames[i]["playlistName"];
+                    frag1.appendChild(option1);
+                    frag2.appendChild(option2);
+                    dropdown1.appendChild(frag1);
+                    dropdown2.appendChild(frag2);
+                }
+            }
 
             function showForm(id){
                 if(id=="browse"){
@@ -71,8 +131,8 @@
                 <table id="playlistsong_table">
                     <tr>
                         <th>PlaylistSongs ID</th>
-                        <th>Playlist ID</th>
-                        <th>Song ID</th>
+                        <th>Playlist Name</th>
+                        <th>Song Name</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -81,82 +141,49 @@
             </div>
 
             <!-- Update Playlist Song -->
-            <form id="update" style="display:none;">
+            <form id="update" style="display:none;" action="/updateplaylistsong" method="post">
                 <legend>Update Playlist Song</legend>
                 <fieldset>
                     <label>PlaylistSongs ID: 1</label>
-                    <input type="hidden" name="playlistSongsID" value="1">
+                    <input type="hidden" name="playlistSongsID" value="1" id="updatePlaylistSongsID">
                     <br>
 
-                    <label>Playlist ID: </label>
-                    <select name="playlistID">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                    </select>
+                    <label>Playlist Name: </label>
+                    <select name="playlistName" id="playlistMenuUpdate"></select>
                     <br>
 
-                    <label>Song ID: </label>
-                    <select name="songID">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                    </select>
+                    <label>Song Name: </label>
+                    <select name="songName" id="songMenuUpdate"></select>
                 </fieldset>
-                <input type="submit" value="Update User" onClick="showForm('browse')">
+                <input type="submit" value="Update Playlist Song" onClick="showForm('browse')">
                 <input type="button" value="Cancel" onClick="showForm('browse')">
             </form>
 
             <!-- Insert Playlist Song -->
-            <form id="insert" style="display:none;">
+            <form id="insert" style="display:none;" action="/insertplaylistsong" method="post">
                 <legend>New Playlist Song</legend>
                 <fieldset>
-                    <label>Playlist ID: </label>
-                    <select name="playlistID">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                    </select>
+                    <label>Playlist Name: </label>
+                    <select name="playlistName" id="playlistMenuDelete"></select>
                     <br>
 
-                    <label>Song ID: </label>
-                    <select name="songID">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                    </select>
+                    <label>Song Name: </label>
+                    <select name="songName" id="songMenuDelete"></select>
                 </fieldset>
-                <input type="submit" value="Add User" onClick="showForm('browse')">
+                <input type="submit" value="Add Playlist Song" onClick="showForm('browse')">
                 <input type="button" value="Cancel"  onClick="showForm('browse')">
             </form>
 
             <!-- Delete Playlist Song -->
-            <form id="delete" style="display:none;">
+            <form id="delete" style="display:none;" action="/deleteplaylistsong" method="post">
                 <legend>Delete User</legend>
                 <fieldset>
                     <p>Are you sure you want to delete this playlist song?</p>
 
-                    <label>PlaylistSongs: 1</label>
-                    <input type="hidden" name="playlistSongsID" value="1">
-                    <br>
-
-                    <label>Playlist ID: </label>
-                    <select name="playlistID">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                    </select>
-                    <br>
-
-                    <label>Song ID: </label>
-                    <select name="songID">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                    </select>
+                    <input type="hidden" name="playlistSongsID" value="1" id="deletePlaylistSongsID">
                 </fieldset>
                 <input type="submit" value="Delete User" onClick="showForm('browse')">
-                <input type="button" value="Cancel"  onClick="showForm('browse')">
+                <input type="button" value="Cancel" onClick="showForm('browse')">
             </form>
         </main>
         <footer>

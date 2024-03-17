@@ -8,7 +8,7 @@ const path = require('path');
 var db = require('./db-connector');
 
 var app = express();   
-PORT = 6125;             
+PORT = 6127;             
 
 // Database
 // var db = require('./database/db-connector')
@@ -132,6 +132,19 @@ app.post('/insertplaylist', function(req, res){
     });
 });
 
+app.post('/insertplaylistsong', function(req, res){
+    const playlistName=req.body.playlistName;
+    const songName=req.body.songName;
+    // Define our queries
+    query = `INSERT INTO PlaylistSongs (playlistID, songID)
+    VALUES ((SELECT playlistID FROM Playlists WHERE playlistName = "${playlistName}"), 
+        (SELECT songID FROM Songs WHERE songName = "${songName}"));`;
+
+    db.pool.query(query, function (err, results, fields){
+        res.redirect('/playlistsongs.html');
+    });
+});
+
 //Delete Routes
 app.post('/deletesong', function(req, res){
     const songID = req.body.songID;
@@ -173,6 +186,15 @@ app.post('/deleteplaylist', function(req, res){
     db.pool.query(query, function (err, results, fields) {
         console.log(JSON.stringify(results));
         res.redirect('/playlists.html');
+    })
+});
+
+app.post('/deleteplaylistsong', function(req, res){
+    const playlistSongsID = req.body.playlistSongsID;
+    query = `DELETE FROM PlaylistSongs WHERE playlistSongsID = ${playlistSongsID};`;
+
+    db.pool.query(query, function (err, results, fields) {
+        res.redirect('/playlistsongs.html');
     })
 });
 
@@ -243,8 +265,27 @@ app.post('/updateplaylist', function(req, res){
     });
 });
 
+app.post('/updateplaylistsong', function(req, res){
+    const playlistSongsID=req.body.playlistSongsID;
+    const playlistName=req.body.playlistName;
+    const songName=req.body.songName;
+    // Define our queries
+    query = `UPDATE PlaylistSongs
+    SET playlistID = (
+            SELECT playlistID FROM Playlists WHERE playlistName = "${playlistName}"
+        ), 
+        songID = (
+            SELECT songID FROM Songs WHERE songName = "${songName}"
+        )
+        WHERE playlistSongsID = ${playlistSongsID};`;
+
+    db.pool.query(query, function (err, results, fields){
+        res.redirect('/playlistsongs.html');
+    });
+});
 
 
+//Misc Routes
 app.get('/artistnames', function(req, res) {
     query = `SELECT artistName FROM Artists`;
 
@@ -255,6 +296,22 @@ app.get('/artistnames', function(req, res) {
 
 app.get('/usernames', function(req, res) {
     query = `SELECT userName FROM Users`;
+
+    db.pool.query(query, function (err, results, fields){
+        res.send(JSON.stringify(results));
+    });
+});
+
+app.get('/songnames', function(req, res) {
+    query = `SELECT songName FROM Songs`;
+
+    db.pool.query(query, function (err, results, fields){
+        res.send(JSON.stringify(results));
+    });
+});
+
+app.get('/playlistnames', function(req, res) {
+    query = `SELECT playlistName FROM Playlists`;
 
     db.pool.query(query, function (err, results, fields){
         res.send(JSON.stringify(results));
