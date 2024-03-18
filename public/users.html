@@ -64,6 +64,21 @@
                 }
             }
 
+            function validateForm(type){
+                let x;
+                switch (type) {
+                    case 'insert':
+                        x = document.forms["userinsert"]["userName"].value;
+                        break;
+                    case 'update':
+                        x = document.forms["userupdate"]["userName"].value;
+                        break;
+                }
+                if (x == "") {
+                    alert("An entry is empty.");
+                    return false;
+                }
+            }
         </script>
     </head>
     <body>
@@ -93,7 +108,7 @@
             </div>
 
             <!-- Update User -->
-            <form id="update" style="display:none;" action="/updateuser" method="post">
+            <form name=userupdate id="update" style="display:none;" action="/updateuser" method="post" onsubmit="return validateForm('update')">
                 <legend>Update User</legend>
                 <fieldset>
                     <label id="updateuserlabel">User ID: </label>
@@ -108,7 +123,7 @@
             </form>
 
             <!-- Insert User -->
-            <form id="insert" style="display:none;" action="/insertuser" method="post">
+            <form name=userinsert id="insert" style="display:none;" action="/insertuser" method="post" onsubmit="return validateForm('insert')">
                 <legend>New User</legend>
                 <fieldset>
                     <label>Username: </label>

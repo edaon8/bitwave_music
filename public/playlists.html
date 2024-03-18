@@ -87,6 +87,24 @@
                     document.getElementById("delete").style.display = "inline-block";
                 }
             }
+
+            function validateForm(type){
+                let x, y;
+                switch (type) {
+                    case 'insert':
+                        x = document.forms["playlistinsert"]["playlistName"].value;
+                        y = document.forms["playlistinsert"]["playlistLike"].value;
+                        break;
+                    case 'update':
+                        x = document.forms["playlistupdate"]["playlistName"].value;
+                        y = document.forms["playlistupdate"]["playlistLike"].value;
+                        break;
+                }
+                if (x == "" || y == "") {
+                    alert("An entry is empty.");
+                    return false;
+                }
+            }
         </script>
     </head>
     <body>
@@ -109,7 +127,7 @@
                         <th>Playlist ID</th>
                         <th>User Name</th>
                         <th>Playlist Name</th>
-                        <th>Playlist Like</th>
+                        <th>Playlist Likes</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -118,7 +136,7 @@
             </div>
 
             <!-- Update Playlist -->
-            <form id="update" style="display:none;" action="/updateplaylist" method="post">
+            <form name=playlistupdate id="update" style="display:none;" action="/updateplaylist" method="post" onsubmit="return validateForm('update')">
                 <legend>Update Playlist</legend>
                 <fieldset>
                     <label id="updateplaylistlabel">Playlist ID: </label>
@@ -142,7 +160,7 @@
             </form>
 
             <!-- Insert Playlist -->
-            <form id="insert" style="display:none;" action="/insertplaylist" method="post">
+            <form name=playlistinsert id="insert" style="display:none;" action="/insertplaylist" method="post" onsubmit="return validateForm('insert')">
                 <legend>New Playlist</legend>
                 <fieldset>
                     <label>Username: </label>

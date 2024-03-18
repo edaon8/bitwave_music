@@ -88,6 +88,24 @@
                     document.getElementById("delete").style.display = "inline-block";
                 }
             }
+
+            function validateForm(type){
+                let x, y;
+                switch (type) {
+                    case 'insert':
+                        x = document.forms["songinsert"]["songName"].value;
+                        y = document.forms["songinsert"]["streamCount"].value;
+                        break;
+                    case 'update':
+                        x = document.forms["songupdate"]["songName"].value;
+                        y = document.forms["songupdate"]["streamCount"].value;
+                        break;
+                }
+                if (x == "" || y == "") {
+                    alert("An entry is empty.");
+                    return false;
+                }
+            }
         </script>
     </head>
     <body>
@@ -119,7 +137,7 @@
             </div>
 
             <!-- Update Song -->
-            <form id="update" style="display:none;" action="/updatesong" method="post">
+            <form name=songupdate id="update" style="display:none;" action="/updatesong" method="post" onsubmit="return validateForm('update')">
                 <legend>Update Song</legend>
                 <fieldset>
                     <label id="updatesonglabel">Song ID: </label>
@@ -143,7 +161,7 @@
             </form>
 
             <!-- Insert Song -->
-            <form id="insert" style="display:none;" action="/insertsong" method="post">
+            <form name=songinsert id="insert" style="display:none;" action="/insertsong" method="post" onsubmit="return validateForm('insert')">
                 <legend>New Song</legend>
                 <fieldset>
                     <label>Song Name: </label>

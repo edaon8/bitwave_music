@@ -64,6 +64,24 @@
                     document.getElementById("delete").style.display = "inline-block";
                 }
             }
+            
+            function validateForm(type){
+                let x, y;
+                switch (type) {
+                    case 'insert':
+                        x = document.forms["artistinsert"]["artistName"].value;
+                        y = document.forms["artistinsert"]["streamCount"].value;
+                        break;
+                    case 'update':
+                        x = document.forms["artistupdate"]["artistName"].value;
+                        y = document.forms["artistupdate"]["streamCount"].value;
+                        break;
+                }
+                if (x == "" || y == "") {
+                    alert("An entry is empty.");
+                    return false;
+                }
+            }
         </script>
     </head>
     <body>
@@ -94,7 +112,7 @@
             </div>
 
             <!-- Update Artist -->
-            <form id="update" style="display:none;" action="/updateartist" method="post">
+            <form name=artistupdate id="update" style="display:none;" action="/updateartist" method="post" onsubmit="return validateForm('update')">
                 <legend>Update Artist</legend>
                 <fieldset>
                     <label id="updateartistlabel">Artist ID: </label>
@@ -113,7 +131,7 @@
             </form>
 
             <!-- Insert Artist -->
-            <form id="insert" style="display:none;" action="/insertartist" method="post">
+            <form name=artistinsert id="insert" style="display:none;" action="/insertartist" method="post" onsubmit="return validateForm('insert')">
                 <legend>New Artist</legend>
                 <fieldset>
                     <label>Artist Name: </label>
